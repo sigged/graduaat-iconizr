@@ -119,3 +119,16 @@ body {
 .mastfoot {
     color: rgba(255, 255, 255, .5);
 }
+
+
+
+.github-logo {
+    display: none;
+
+    @media (min-width: 48em) {
+        display: block;
+        position: absolute;
+        bottom: 30px;
+        right: 20px;
+    }
+}
