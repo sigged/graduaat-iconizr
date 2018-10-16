@@ -1,0 +1,37 @@
+﻿
+
+/*
+ * loading
+ */
+.generating {
+    transform: rotate(360deg);
+    transform-origin: top left;
+    transform-origin: center center;
+    transform: rotate(0deg);
+    animation: spin 1.0s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+form{
+    min-height:200px;
+}
+
+textarea.noresize {
+    resize: none;
+}
+
+#placeholder {
+    width: 200px;
+    height: 200px;
+    background-image: url(/assets/classroom.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+
+}

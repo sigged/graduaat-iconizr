@@ -1,0 +1,10 @@
+[
+  {
+    "outputFile": "wwwroot/bundles/iconizr.css",
+    "inputFile": "Webassets/scss/base.scss",
+    "includeInProject": true,
+    "options": {
+      "sourceMap": true
+    }
+  }
+]

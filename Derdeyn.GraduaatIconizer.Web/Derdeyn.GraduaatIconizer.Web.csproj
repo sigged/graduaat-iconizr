@@ -8,6 +8,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.0.1916590" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta0005" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\imgresources\fonts\" />
   </ItemGroup>
 
 </Project>

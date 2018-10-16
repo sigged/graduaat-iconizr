@@ -44,9 +44,11 @@ namespace Derdeyn.GraduaatIconizer.Web
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/error/500");
                 app.UseHsts();
             }
+
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -54,6 +56,18 @@ namespace Derdeyn.GraduaatIconizer.Web
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "about",
+                    template: "about",
+                    defaults: new { Action = "About", Controller = "Home", Area= ""}
+                );
+
+                routes.MapRoute(
+                    name: "error",
+                    template: "error/{statusCode?}",
+                    defaults: new { Action = "Index", Controller = "Error", Area = "" }
+                );
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

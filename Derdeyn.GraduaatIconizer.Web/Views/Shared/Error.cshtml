@@ -3,20 +3,24 @@
     ViewData["Title"] = "Error";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
-
-@if (Model.ShowRequestId)
+@if (Model.StatusCode == 404)
 {
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
+    <h1 class="cover-heading">404.</h1>
+    <p class="lead text-left">De pagina werd niet gevonden.</p>
+    <div class="text-left">
+        <p>Wellicht ben je hier terecht gekomen door een foutieve hyperlink, of heb je gewoon een foute URL ingetikt. Probeer eens via <a asp-action="Index" asp-controller="Home">startpagina</a>.</p>
+    </div>
+}
+else
+{
+    <h1 class="cover-heading">Error @Model.StatusCode</h1>
+    <p class="lead text-left">Er deed zich een fout voor tijdens de uitvoering van deze request.</p>
+
+    @if (Model.ShowRequestId)
+    {
+        <p>
+            <strong>Request ID:</strong> <code>@Model.RequestId</code>
+        </p>
+    }
 }
 
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>Development environment should not be enabled in deployed applications</strong>, as it can result in sensitive information from exceptions being displayed to end users. For local debugging, development environment can be enabled by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>, and restarting the application.
-</p>
