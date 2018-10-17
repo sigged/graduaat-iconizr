@@ -1,11 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.Extensions.Options.IOptionsSnapshot<Derdeyn.GraduaatIconizer.Web.Models.IconizrSettings> settings
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Graduaat Iconizr</title>
+    <title>@ViewData["Title"] - @settings.Value.AppName</title>
     <meta name="author" content="S Derdeyn">
-    <link rel="icon" href="favicon.ico">
+    <link rel="icon" href="/favicon.ico">
 
     <environment include="Development">
         <link rel="stylesheet" href="~/bundles/iconizr.css" />
@@ -33,11 +34,11 @@
 
         <footer class="mastfoot mt-auto">
             <div class="inner">
-                <p>&copy; @DateTime.Now.Year - Graduaat Iconizr</p>
+                <p>&copy; @DateTime.Now.Year - @settings.Value.AppName</p>
             </div>
         </footer>
     </div>
-    <a class="github-logo" href="https://github.com/sigged/graduaat-iconizr" title="Yep, it's open source."><img src="~/assets/GitHub-Mark-Light-32px.png" width="32" height="32" alt="View on Github.com" /></a>
+    <a class="github-logo" href="@settings.Value.GitRepo" title="Yep, it's open source."><img src="~/assets/GitHub-Mark-Light-32px.png" width="32" height="32" alt="View on Github.com" /></a>
 
     <environment include="Development">
         <script src="~/bundles/iconizr.js"></script>

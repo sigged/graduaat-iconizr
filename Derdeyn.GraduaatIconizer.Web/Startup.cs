@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Derdeyn.GraduaatIconizer.Web.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +25,8 @@ namespace Derdeyn.GraduaatIconizer.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<IconizrSettings>(Configuration.GetSection("Settings"));
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -58,7 +61,7 @@ namespace Derdeyn.GraduaatIconizer.Web
             {
                 routes.MapRoute(
                     name: "generate",
-                    template: "generate/{module}/{group}/{isRoot}",
+                    template: "generate/{top}/{bottom}/{isRoot}",
                     defaults: new { Action = "Generate", Controller = "Home", Area = "" }
                 );
 

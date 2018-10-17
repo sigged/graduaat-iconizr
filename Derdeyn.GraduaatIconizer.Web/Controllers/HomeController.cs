@@ -2,30 +2,26 @@
 using Derdeyn.GraduaatIconizer.Web.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats;
-using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-using SixLabors.Primitives;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Derdeyn.GraduaatIconizer.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IOptionsSnapshot<IconizrSettings> _settings;
 
-        public HomeController(IHostingEnvironment hostingEnvironment)
+        public HomeController(IHostingEnvironment hostingEnvironment, IOptionsSnapshot<IconizrSettings> settings)
         {
             _hostingEnvironment = hostingEnvironment;
+            _settings = settings;
         }
 
         public IActionResult Index()
@@ -34,14 +30,21 @@ namespace Derdeyn.GraduaatIconizer.Web.Controllers
             return View();
         }
 
-        public IActionResult Generate(string module = "", string group = "", bool isRoot = false)
+        public IActionResult Generate(string top = "", string bottom = "", bool isRoot = false)
         {
-            module = WebUtility.UrlDecode(module ?? "");
-            group = WebUtility.UrlDecode(group ?? "");
-            module = Remove32BitChars(module).PadRight(6, ' ').Substring(0, 6).Trim();
-            group = Remove32BitChars(group).PadRight(6, ' ').Substring(0, 6).Trim();
+            top = WebUtility.UrlDecode(top ?? "")
+                    .Remove32BitChars()
+                    .PadRight(_settings.Value.MaxLength, ' ')
+                    .Substring(0, _settings.Value.MaxLength)
+                    .Trim();
+            
+            bottom = WebUtility.UrlDecode(bottom ?? "")
+                    .Remove32BitChars()
+                    .PadRight(_settings.Value.MaxLength, ' ')
+                    .Substring(0, _settings.Value.MaxLength)
+                    .Trim();
 
-            string text = $"{module}\n{group}";
+            string text = $"{top}\n{bottom}";
             string baseimage = "imgresources/base-blue.png";
             if (isRoot)
                 baseimage = "imgresources/base-orange.png";
@@ -50,6 +53,8 @@ namespace Derdeyn.GraduaatIconizer.Web.Controllers
             string output = Path.Combine(_hostingEnvironment.WebRootPath, "imgresources/output.png");
             string fontpath = Path.Combine(_hostingEnvironment.WebRootPath, "imgresources/fonts/ARLRDBD.TTF"); // Arial Rounded MT Bold
 
+
+
             string base64Result = "";
             byte[] imagebytes = null;
 
@@ -57,7 +62,7 @@ namespace Derdeyn.GraduaatIconizer.Web.Controllers
 
             using (var img = Image.Load(baseimage))
             {
-                using (var imgResult = img.Clone(ctx => ctx.ApplyScalingWaterMark(font, text, Rgba32.Black, 20, false)))
+                using (var imgResult = img.Clone(ctx => ctx.ApplyScalingWaterMark(font, text, Rgba32.Black, _settings.Value.DefaultMargin, false)))
                 {
                     using (var imageStream = new MemoryStream())
                     {
@@ -69,8 +74,8 @@ namespace Derdeyn.GraduaatIconizer.Web.Controllers
                 }
             }
 
-            string downloadName = $"{module}-{group}.png";
-            if (module.Length + group.Length == 0) downloadName = "blanco.png";
+            string downloadName = $"{top}-{bottom}.png";
+            if (top.Length + bottom.Length == 0) downloadName = "blanco.png";
 
             return File(imagebytes, "image/png", $"{downloadName}");
         }
@@ -79,23 +84,6 @@ namespace Derdeyn.GraduaatIconizer.Web.Controllers
         {
             ViewBag.NavItem = "About";
             return View();
-        }
-
-        static string Remove32BitChars(string str)
-        {
-            if (str == null) return "";
-
-            char[] oldchars = str.ToCharArray();
-            List<char> newchars = new List<char>(oldchars.Length);
-
-            for (var i = 0; i < oldchars.Length; i++)
-            {
-                if(!char.IsControl(oldchars[i]) && !char.IsHighSurrogate(oldchars[i]) && !char.IsLowSurrogate(oldchars[i]))
-                {
-                    newchars.Add(oldchars[i]);
-                }
-            }
-            return new string(newchars.ToArray());
         }
 
     }
