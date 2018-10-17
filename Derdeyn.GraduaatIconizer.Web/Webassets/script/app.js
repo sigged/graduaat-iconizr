@@ -56,12 +56,18 @@
     });
 
     generate.addEventListener('click', function () {
+        var modulevalue = module.value && module.value.length > 0 ? module.value : ' ';
+        var groupvalue = group.value && group.value.length > 0 ? group.value : ' ';
+
         generate.innerText = "Even geduld...";
         generate.setAttribute('disabled', 'disabled');
         placeholder.style.display = 'none';
         result.style.display = 'none';
         loading.style.display = 'inline-block';
-        result.src = "/home/generate?module=" + module.value + "&group=" + group.value + "&isRoot=" + (type.value === "root"? true : false);
+        result.src = "/generate/" +
+            encodeURIComponent(modulevalue) + "/" +
+            encodeURIComponent(groupvalue) + "/" +
+            (type.value === "root" ? true : false)
     });
 
 

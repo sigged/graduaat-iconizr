@@ -57,6 +57,12 @@ namespace Derdeyn.GraduaatIconizer.Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                    name: "generate",
+                    template: "generate/{module}/{group}/{isRoot}",
+                    defaults: new { Action = "Generate", Controller = "Home", Area = "" }
+                );
+
+                routes.MapRoute(
                     name: "about",
                     template: "about",
                     defaults: new { Action = "About", Controller = "Home", Area= ""}

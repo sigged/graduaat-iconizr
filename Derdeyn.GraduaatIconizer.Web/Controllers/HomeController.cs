@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -35,8 +36,10 @@ namespace Derdeyn.GraduaatIconizer.Web.Controllers
 
         public IActionResult Generate(string module = "", string group = "", bool isRoot = false)
         {
-            module = Remove32BitChars(module)?.PadRight(4, ' ').Substring(0, 4).Trim();
-            group = Remove32BitChars(group)?.PadRight(4, ' ').Substring(0, 4).Trim();
+            module = WebUtility.UrlDecode(module ?? "");
+            group = WebUtility.UrlDecode(group ?? "");
+            module = Remove32BitChars(module).PadRight(6, ' ').Substring(0, 6).Trim();
+            group = Remove32BitChars(group).PadRight(6, ' ').Substring(0, 6).Trim();
 
             string text = $"{module}\n{group}";
             string baseimage = "imgresources/base-blue.png";
@@ -66,7 +69,10 @@ namespace Derdeyn.GraduaatIconizer.Web.Controllers
                 }
             }
 
-            return File(imagebytes, "image/png");
+            string downloadName = $"{module}-{group}.png";
+            if (module.Length + group.Length == 0) downloadName = "blanco.png";
+
+            return File(imagebytes, "image/png", $"{downloadName}");
         }
 
         public IActionResult About()
