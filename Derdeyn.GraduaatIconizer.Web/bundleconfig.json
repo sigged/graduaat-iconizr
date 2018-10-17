@@ -2,8 +2,8 @@
   // this section bundles Jquery and Bootstrap into one script
   {
     "inputFiles": [
-      "node_modules/jquery/dist/jquery.js", // jquery must be loaded before bootstrap
-      "node_modules/bootstrap/dist/js/bootstrap.bundle.js", // append bootstrap
+      //"node_modules/jquery/dist/jquery.js", // jquery must be loaded before bootstrap
+      //"node_modules/bootstrap/dist/js/bootstrap.bundle.js", // append bootstrap
       "Webassets/script/app.js" 
     ],
     "outputFileName": "wwwroot/bundles/iconizr.js", // this comes out
